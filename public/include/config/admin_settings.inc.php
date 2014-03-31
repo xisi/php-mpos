@@ -287,6 +287,27 @@ $aSettings['system'][] = array(
   'tooltip' => 'Should users supply a valid e-mail address upon registration. Requires them to confirm the address before accounts are activated.'
 );
 $aSettings['system'][] = array(
+  'display' => 'Disable custom worker difficulty', 'type' => 'select',
+  'options' => array( 0 => 'No', 1 => 'Yes' ),
+  'default' => 0,
+  'name' => 'disable_custom_worker_difficulty', 'value' => $setting->getValue('disable_custom_worker_difficulty'),
+  'tooltip' => 'Enable or Disable custom worker difficulties. If you want to run only with VARDIFF disable this.'
+);
+$aSettings['system'][] = array(
+  'display' => 'Custom worker difficulty minimum', 'type' => 'text',
+  'size' => 10,
+  'default' => 1,
+  'name' => 'custom_worker_difficulty_min', 'value' => $setting->getValue('custom_worker_difficulty_min', 1),
+  'tooltip' => 'Minimum difficulty for custom worker difficulty'
+);
+$aSettings['system'][] = array(
+  'display' => 'Custom worker difficulty maximum', 'type' => 'text',
+  'size' => 10,
+  'default' => 1024,
+  'name' => 'custom_worker_difficulty_max', 'value' => $setting->getValue('custom_worker_difficulty_max', 1024),
+  'tooltip' => 'Maximum difficulty for custom worker difficulty'
+);
+$aSettings['system'][] = array(
   'display' => 'Disable registrations', 'type' => 'select',
   'options' => array( 0 => 'No', 1 => 'Yes' ),
   'default' => 0,
