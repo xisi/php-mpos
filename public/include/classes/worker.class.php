@@ -19,19 +19,26 @@ class Worker extends Base {
     $username = $this->user->getUserName($account_id);
     $iFailed = 0;
     foreach ($data as $key => $value) {
-    if ('' === $value['username'] || '' === $value['password']) {
-      $iFailed++;
-    } else {
-      // Check worker name first
-      if (! preg_match("/^[0-9a-zA-Z_\-]*$/", $value['username'])) {
+      if ('' === $value['username'] || '' === $value['password']) {
         $iFailed++;
-        continue;
-      }
-      // Prefix the WebUser to Worker name
-      $value['username'] = "$username." . $value['username'];
-      $stmt = $this->mysqli->prepare("UPDATE $this->table SET password = ?, username = ?, monitor = ? WHERE account_id = ? AND id = ? LIMIT 1");
-      if ( ! ( $this->checkStmt($stmt) && $stmt->bind_param('ssiii', $value['password'], $value['username'], $value['monitor'], $account_id, $key) && $stmt->execute()) )
-        $iFailed++;
+      } else {
+        // Check worker name first
+        if (! preg_match("/^[0-9a-zA-Z_\-]*$/", $value['username'])) {
+          $iFailed++;
+          continue;
+        }
+        // Check if custom worker diff is activated and ensure min/max values
+        if ($this->setting->getValue('disable_custom_worker_difficulty', 0) != 1 && $value['fixed_difficulty'] != 0) {
+          if ($value['fixed_difficulty'] < $this->setting->getValue('custom_worker_difficulty_min', 1))
+            $iFailed++;
+          if ($value['fixed_difficulty'] > $this->setting->getValue('custom_worker_difficulty_min', 1024))
+            $iFailed++;
+        }
+        // Prefix the WebUser to Worker name
+        $value['username'] = "$username." . $value['username'];
+        $stmt = $this->mysqli->prepare("UPDATE $this->table SET password = ?, username = ?, monitor = ?, fixed_difficulty = ? WHERE account_id = ? AND id = ? LIMIT 1");
+        if ( ! ( $this->checkStmt($stmt) && $stmt->bind_param('ssiiii', $value['password'], $value['username'], $value['monitor'], $value['fixed_difficulty'], $account_id, $key) && $stmt->execute()) )
+          $iFailed++;
       }
     }
     if ($iFailed == 0)
@@ -112,7 +119,7 @@ class Worker extends Base {
   public function getWorkers($account_id, $interval=600) {
     $this->debug->append("STA " . __METHOD__, 4);
     $stmt = $this->mysqli->prepare("
-      SELECT id, username, password, monitor,
+      SELECT id, username, password, monitor, fixed_difficulty,
        ( SELECT COUNT(id) FROM " . $this->share->getTableName() . " WHERE username = w.username AND time > DATE_SUB(now(), INTERVAL ? SECOND)) AS count_all,
        ( SELECT COUNT(id) FROM " . $this->share->getArchiveTableName() . " WHERE username = w.username AND time > DATE_SUB(now(), INTERVAL ? SECOND)) AS count_all_archive,
        (
@@ -267,6 +274,7 @@ class Worker extends Base {
 $worker = new Worker();
 $worker->setDebug($debug);
 $worker->setMysql($mysqli);
+$worker->setSetting($setting);
 $worker->setMemcache($memcache);
 $worker->setShare($share);
 $worker->setConfig($config);

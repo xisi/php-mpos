@@ -45,6 +45,9 @@
                   {if $GLOBAL.config.disable_notifications != 1 && $DISABLE_IDLEWORKERNOTIFICATIONS != 1}<th>Monitor</th>{/if}
                   <th class="text-right">Khash/s</th>
                   <th class="text-right">Difficulty</th>
+                  {if $DISABLE_CUSTOM_WORKER_DIFFICULTY|default:"0" != 1}
+                  <th class="text-right">Custom Difficulty</th>
+                  {/if}
                   <th class="text-center">Action</th>
                 </tr>
              </thead>
@@ -69,6 +72,9 @@
                  {/if}
                  <td class="text-right">{$WORKERS[worker].hashrate|number_format}</td>
                  <td class="text-right">{$WORKERS[worker].difficulty|number_format:"2"}</td>
+                 {if $DISABLE_CUSTOM_WORKER_DIFFICULTY|default:"0" != 1}
+                 <td class="text-right"><input class="form-control text-right" type="text" name="data[{$WORKERS[worker].id}][fixed_difficulty]" value="{$WORKERS[worker].fixed_difficulty}" /></td>
+                 {/if}
                  <td class="text-center"><a href="{$smarty.server.SCRIPT_NAME}?page={$smarty.request.page|escape}&action={$smarty.request.action|escape}&do=delete&id={$WORKERS[worker].id|escape}&ctoken={$CTOKEN|escape|default:""}"><i class="fa fa-trash-o fa-fw"></i></a></td>
                </tr>
                {/section}
