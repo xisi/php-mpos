@@ -31,7 +31,7 @@ class Worker extends Base {
         if ($this->setting->getValue('disable_custom_worker_difficulty', 0) != 1 && $value['fixed_difficulty'] != 0) {
           if ($value['fixed_difficulty'] < $this->setting->getValue('custom_worker_difficulty_min', 1))
             $iFailed++;
-          if ($value['fixed_difficulty'] > $this->setting->getValue('custom_worker_difficulty_min', 1024))
+          if ($value['fixed_difficulty'] > $this->setting->getValue('custom_worker_difficulty_max', 1024))
             $iFailed++;
         }
         // Prefix the WebUser to Worker name
