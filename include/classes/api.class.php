@@ -37,7 +37,8 @@ class Api extends Base {
       )), $force ? JSON_FORCE_OBJECT : 0
     );
     // JSONP support issue #1700
-    if (isset($_REQUEST['callback']))
+    // The regex is to validate the callback, see https://gist.github.com/ptz0n/1217080
+    if (isset($_REQUEST['callback']) && preg_match('^[a-zA-Z_$][0-9a-zA-Z_$]*(?:\[(?:".+"|\'.+\'|\d+)\])*?$', $_REQUEST['callback']))
       return $_REQUEST['callback'] . '(' . $json . ');';
     return $json;
   }
