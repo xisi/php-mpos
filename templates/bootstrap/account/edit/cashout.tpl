@@ -43,7 +43,7 @@
       <input type="hidden" name="ctoken" value="{$CTOKEN|escape|default:""}" />
       <input type="hidden" name="utype" value="withdraw_funds">
       {if $GLOBAL.twofactor.enabled && $GLOBAL.twofactor.options.withdraw}
-      {if $GLOBAL.userdata.balance.confirmed|escape < $GLOBAL.config.mp_threshold.min || $GLOBAL.userdata.balance.confirmed|escape > $GLOBAL.config.mp_threshold.max}
+      {if $GLOBAL.userdata.balance.confirmed|escape < $GLOBAL.config.mp_threshold.min}
       <input type="submit" value="Unlock" class="btn btn-warning btn-sm" name="unlock"  disabled="disabled">
       {elseif $WITHDRAWSENT == 1 && $WITHDRAWUNLOCKED == 1}
       <input type="submit" value="Cash Out" class="btn btn-success btn-sm">
