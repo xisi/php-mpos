@@ -86,7 +86,7 @@ if ($setting->getValue('disable_manual_payouts') != 1 && $aManualPayouts) {
     }
     if ($bitcoin->validateaddress($aUserData['coin_address'])) {
       if (!$transaction_id = $transaction->createDebitMPRecord($aUserData['id'], $aUserData['coin_address'], $aUserData['confirmed'])) {
-        $log->logFatal('    failed to fullt debit user ' . $aUserData['username'] . ': ' . $transaction->getCronError());
+        $log->logFatal('    failed to fully debit user ' . $aUserData['username'] . ': ' . $transaction->getCronError());
         $monitoring->endCronjob($cron_name, 'E0064', 1, true);
       } else if (!$config['sendmany']['enabled'] || !$sendmanyAvailable) {
         // Run the payouts from RPC now that the user is fully debited

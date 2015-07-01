@@ -98,7 +98,10 @@ $aGlobal = array(
     'txfee_manual' => $config['txfee_manual'],
     'txfee_auto' => $config['txfee_auto'],
     'payout_system' => $config['payout_system'],
-    'mp_threshold' => $config['mp_threshold'],
+    'mp_threshold' => array(
+      'min' => $config['mp_threshold']['min'],
+      'max' => $config['mp_threshold']['max']
+    ),
     'ap_threshold' => array(
       'min' => $config['ap_threshold']['min'],
       'max' => $config['ap_threshold']['max']

@@ -102,8 +102,10 @@ if ($user->isAuthenticated()) {
         	  $_SESSION['POPUP'][] = array('CONTENT' => 'Manual payouts are disabled.', 'TYPE' => 'alert alert-warning');
           } else if ($config['twofactor']['enabled'] && $config['twofactor']['options']['withdraw'] && !$wf_editable) {
             $_SESSION['POPUP'][] = array('CONTENT' => 'You have not yet unlocked account withdrawls.', 'TYPE' => 'alert alert-danger');
-          } else if ($aBalance['confirmed'] < $config['mp_threshold']) {
-            $_SESSION['POPUP'][] = array('CONTENT' => 'Account balance must be >= ' . $config['mp_threshold'] . ' to do a Manual Payout.', 'TYPE' => 'alert alert-warning');
+          } else if ($aBalance['confirmed'] < $config['mp_threshold']['min']) {
+            $_SESSION['POPUP'][] = array('CONTENT' => 'Account balance must be >= ' . $config['mp_threshold']['min'] . ' to do a Manual Payout.', 'TYPE' => 'alert alert-warning');
+          } else if ($aBalance['confirmed'] > $config['mp_threshold']['max']) {
+            $_SESSION['POPUP'][] = array('CONTENT' => 'The maximum allowed withdrawl is ' . $config['mp_threshold']['max'] . $config['currency'] . ' for a Manual Payout.', 'TYPE' => 'alert alert-warning');
           } else if (!$coin_address->getCoinAddress($_SESSION['USERDATA']['id'])) {
             $_SESSION['POPUP'][] = array('CONTENT' => 'You have no payout address set.', 'TYPE' => 'alert alert-danger');
         	} else {
