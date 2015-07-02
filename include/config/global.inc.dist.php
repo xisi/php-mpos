@@ -119,7 +119,7 @@ $config['ap_threshold']['max'] = 250;
  *   https://github.com/MPOS/php-mpos/wiki/Config-Setup#wiki-manual-payout-threshold
  **/
 $config['mp_threshold']['min'] = 1;
-$config['mp_threshold']['max'] = 250;
+$config['mp_threshold']['max'] = 0;
 
 /**
  * Donation thresholds

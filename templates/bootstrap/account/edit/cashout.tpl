@@ -16,10 +16,7 @@
                 {if $GLOBAL.config.txfee_manual > 0}Please note: a {if $GLOBAL.config.txfee_manual > 0.00001}{$GLOBAL.config.txfee_manual}{else}{$GLOBAL.config.txfee_manual|number_format:"8"}{/if} {$GLOBAL.config.currency} transaction will apply when processing "On-Demand" manual payments <span id="tt"><img width="15px" height="15px" title="This {if $GLOBAL.config.txfee_manual > 0.00001}{$GLOBAL.config.txfee_manual}{else}{$GLOBAL.config.txfee_manual|number_format:"8"}{/if} manual payment transaction fee is a network fee and goes back into the network not the pool." src="site_assets/bootstrap/images/questionmark.png"></span>{/if}
               </p>
               <p style="padding-left:3px; padding-redight:30px; font-size:10px;">
-                Minimum: {$GLOBAL.config.mp_threshold.min} {$GLOBAL.config.currency}
-              </p>
-              <p style="padding-left:3px; padding-redight:30px; font-size:10px;">
-                Maximum: {$GLOBAL.config.mp_threshold.max} {$GLOBAL.config.currency}
+                Minimum: {$GLOBAL.config.mp_threshold.min} {$GLOBAL.config.currency}{if $GLOBAL.config.mp_threshold.max > 0}, Maximum: {$GLOBAL.config.mp_threshold.max} {$GLOBAL.config.currency}{/if} 
               </p>
             </div>
             <div class="form-group">

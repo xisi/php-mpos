@@ -79,6 +79,10 @@ if ($setting->getValue('disable_manual_payouts') != 1 && $aManualPayouts) {
   foreach ($aManualPayouts as $aUserData) {
     $transaction_id = NULL;
     $rpc_txid = NULL;
+    // if confirmed is greater than mp_max, set it to mp_max so the payout will not exceed max
+    if ($aUserData['confirmed'] > $config['mp_threshold']['max']) {
+      $aUserData['confirmed'] = $config['mp_threshold']['max'];
+    }
     $log->logInfo(sprintf($mask, $aUserData['id'], $aUserData['username'], $aUserData['confirmed'], $aUserData['coin_address'], $aUserData['payout_id']));
     if (!$oPayout->setProcessed($aUserData['payout_id'])) {
       $log->logFatal('    unable to mark transactions ' . $aData['id'] . ' as processed. ERROR: ' . $oPayout->getCronError());
@@ -166,6 +170,10 @@ if ($setting->getValue('disable_auto_payouts') != 1 && $aAutoPayouts) {
   foreach ($aAutoPayouts as $aUserData) {
     $transaction_id = NULL;
     $rpc_txid = NULL;
+    // if confirmed is greater than ap_max, set it to ap_max so the payout will not exceed max
+    if ($aUserData['confirmed'] > $config['ap_threshold']['max']) {
+      $aUserData['confirmed'] = $config['ap_threshold']['max'];
+    }
     $log->logInfo(sprintf($mask, $aUserData['id'], $aUserData['username'], $aUserData['confirmed'], $aUserData['coin_address'], $aUserData['ap_threshold']));
     if ($bitcoin->validateaddress($aUserData['coin_address'])) {
       if (!$transaction_id = $transaction->createDebitAPRecord($aUserData['id'], $aUserData['coin_address'], $aUserData['confirmed'])) {
