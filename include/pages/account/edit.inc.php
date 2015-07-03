@@ -104,8 +104,6 @@ if ($user->isAuthenticated()) {
             $_SESSION['POPUP'][] = array('CONTENT' => 'You have not yet unlocked account withdrawls.', 'TYPE' => 'alert alert-danger');
           } else if ($aBalance['confirmed'] < $config['mp_threshold']['min']) {
             $_SESSION['POPUP'][] = array('CONTENT' => 'Account balance must be >= ' . $config['mp_threshold']['min'] . ' to do a Manual Payout.', 'TYPE' => 'alert alert-warning');
-          } else if ($aBalance['confirmed'] > $config['mp_threshold']['max']) {
-            $_SESSION['POPUP'][] = array('CONTENT' => 'The maximum allowed withdrawl is ' . $config['mp_threshold']['max'] . $config['currency'] . ' for a Manual Payout.', 'TYPE' => 'alert alert-warning');
           } else if (!$coin_address->getCoinAddress($_SESSION['USERDATA']['id'])) {
             $_SESSION['POPUP'][] = array('CONTENT' => 'You have no payout address set.', 'TYPE' => 'alert alert-danger');
         	} else {
@@ -114,6 +112,7 @@ if ($user->isAuthenticated()) {
         	    if (!$oPayout->isPayoutActive($_SESSION['USERDATA']['id'])) {
         	      if (!$config['csrf']['enabled'] || $config['csrf']['enabled'] && $csrftoken->valid) {
         	        if ($iPayoutId = $oPayout->createPayout($_SESSION['USERDATA']['id'], $oldtoken_wf)) {
+        	          if ($aBalance['confirmed'] > $config['mp_threshold']['max']) $_SESSION['POPUP'][] = array('CONTENT' => 'The maximum allowed withdrawl is ' . $config['mp_threshold']['max'] . $config['currency'] . ', request processed for ' . $config['mp_threshold']['max'] . $config['currency'] . '.', 'TYPE' => 'alert alert-warning');
         	          $_SESSION['POPUP'][] = array('CONTENT' => 'Created new manual payout request with ID #' . $iPayoutId);
         	        } else {
         	          $_SESSION['POPUP'][] = array('CONTENT' => $iPayoutId->getError(), 'TYPE' => 'alert alert-danger');
