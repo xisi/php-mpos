@@ -3,14 +3,6 @@ $defflip = (!cfip()) ? exit(header('HTTP/1.1 401 Unauthorized')) : 1;
 // Used for performance calculations
 $dStartTime = microtime(true);
 
-// set locale
-$language_code = 'ru_RU.utf8';
-putenv("LANG=$language_code");
-setlocale(LC_ALL, $language_code);
-$domain = 'pool_ru';
-bindtextdomain($domain, '../locales');
-textdomain($domain); 
-
 define('INCLUDE_DIR', BASEPATH . '../include');
 define('CLASS_DIR', INCLUDE_DIR . '/classes');
 define('PAGES_DIR', INCLUDE_DIR . '/pages');
@@ -35,6 +27,13 @@ if (!isset($config['db']['shared']['news']))
 // load our security configs
 if (!include_once(INCLUDE_DIR . '/config/security.inc.dist.php')) die('Unable to load base security config from ['.INCLUDE_DIR. '/config/security.inc.dist.php' . '] - '.$quickstartlink);
 if (@file_exists(INCLUDE_DIR . '/config/security.inc.php')) include_once(INCLUDE_DIR . '/config/security.inc.php');
+
+// set locale
+$language_code = $config['locale'].'utf8';
+putenv("LANG=$language_code");
+setlocale(LC_ALL, $language_code);
+bindtextdomain($config['locale_domain'], '../locales');
+textdomain($config['locale_domain']); 
 
 // start our session, we need it for smarty caching
 session_set_cookie_params(time()+$config['cookie']['duration'], $config['cookie']['path'], $config['cookie']['domain'], $config['cookie']['secure'], $config['cookie']['httponly']);

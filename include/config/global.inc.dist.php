@@ -10,6 +10,14 @@ $config['version'] = '1.0.1';
 $config['version_url'] = 'https://raw.githubusercontent.com/MPOS/php-mpos/master/include/version.inc.php';
 
 /**
+ * Locale
+ *  The default language for text. Currently supported:
+ *   en_US, ru_RU
+ */
+$config['locale'] = 'en_US';
+$config['locale_domain'] = 'pool_en';
+
+/**
  * Unless you disable this, we'll do a quick check on your config first.
  *  https://github.com/MPOS/php-mpos/wiki/Config-Setup#wiki-config-check
  */
