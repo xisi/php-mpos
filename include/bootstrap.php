@@ -29,7 +29,7 @@ if (!include_once(INCLUDE_DIR . '/config/security.inc.dist.php')) die('Unable to
 if (@file_exists(INCLUDE_DIR . '/config/security.inc.php')) include_once(INCLUDE_DIR . '/config/security.inc.php');
 
 // set locale
-$language_code = $config['locale'].'utf8';
+$language_code = $config['locale'].'.utf8';
 putenv("LANG=$language_code");
 setlocale(LC_ALL, $language_code);
 bindtextdomain($config['locale_domain'], '../locales');
